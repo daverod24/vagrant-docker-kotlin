@@ -35,8 +35,8 @@ Además, necesitamos instalar un complemento que administre el hostsarchivo en l
 vagrant plugin install vagrant-hostmanager
 ```
 
-Paso 2: crear un recurso de Hello World
-La API debe ser lo más simple posible y, en aras de la finalidad, utilizamos Spring Boot y escribimos el código en Kotlin . Como nuestro objetivo es demostrar el poder de Ansible, Docker y Vagrant, no entraremos en detalles para construir la API; El código fuente está disponible aquí .
+## Paso 2: crear un recurso de Hello World
+La API debe ser lo más simple posible y, en aras de la finalidad, utilizamos Spring Boot y escribimos el código en Kotlin . Como nuestro objetivo es demostrar el poder de Ansible, Docker y Vagrant, no entraremos en detalles para construir la API; El código fuente está disponible aquí.
 
 El punto final tiene la siguiente especificación
 
@@ -94,7 +94,7 @@ Vagrant.configure(2) do |config|
     config.hostmanager.enabled           = true
     config.hostmanager.manage_guest      = true
 
-    config.ssh.private_key_path = "id_rsa"
+    config.ssh.private_key_path = "vagrant_docker/id_rsa"
 
     config.vm.define "srv" do |v|
       v.vm.provider "docker" do |d|
@@ -121,8 +121,8 @@ end
 
 ```
 
-## Paso 5: Crear un libro de jugadas con respuestas
-El libro de jugadas consta de tres roles  
+## Paso 5: Crear un playbook de ansible
+El playbook consta de tres roles  
 Se configura un archivo requirements.yml para descargar los roles externos.
 
 ```yaml
@@ -164,8 +164,9 @@ Rol para construir e implementar la aplicación hello-world
 ---
 
 - name: Build the hello-world project
-  shell: >
-    chdir=/tmp/kotlin-hello-world mvn clean package spring-boot:repackage
+  shell: mvn clean package spring-boot:repackage
+  args:
+    chdir: /tmp/kotlin-hello-world
   tags: hello-world
   register: mvn_result
 
@@ -196,11 +197,17 @@ Rol para construir e implementar la aplicación hello-world
    var: curl_result.stdout
 
 ```
+Cree una ssh key y agreguela a el directorio vagrant_docker
 
+```shell 
+ssh-keygen -f vagrant_docker/id_rsa -t rsa -C "daverod24@example.com"
+
+```
 
 ¡Eso es! Abra la Terminal/Línea de comando y vaya al directorio raíz del proyecto y ejecute
 
 ```shell 
+
 vagrant up
 
 ```
