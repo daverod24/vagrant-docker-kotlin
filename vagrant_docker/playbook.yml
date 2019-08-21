@@ -1,0 +1,15 @@
+---
+
+- name: Setup environment docker with kotlin example
+  hosts: all
+  remote_user: root
+  become: yes
+
+  roles:
+    - role: gantsign.maven
+      maven_version: '3.6.1'
+      maven_is_default_installation: yes
+      maven_fact_group_name: maven
+
+    - role: geerlingguy.java
+    - role: hello-world

@@ -1,0 +1,33 @@
+---
+
+- name: Build the hello-world project
+  shell: >
+    chdir=/tmp/kotlin-hello-world mvn clean package spring-boot:repackage
+  tags: hello-world
+  register: mvn_result
+
+- name: "mvn clean task output"
+  debug:
+   var: mvn_result
+
+- name: Copy
+  copy:
+   src: ../files/etc/init.d/hello-world.sh
+   dest: /etc/init.d/hello-world.sh
+   mode: 0775
+  tags: java
+
+- name: Run the hello-world
+  become: yes
+  shell: sh /etc/init.d/hello-world.sh
+
+- name: Using curl get
+  shell: curl http://127.0.0.1:8080/hello/esta-es-una-prueba-de-hello-world-de-kotlin-en-vagrant-y-docker
+  args:
+    warn: no
+  ignore_errors: yes
+  register: curl_result
+
+- name: "mvn clean task output"
+  debug:
+   var: curl_result.stdout

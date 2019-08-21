@@ -1,0 +1,13 @@
+
+FROM ubuntu:latest
+MAINTAINER daverod24
+
+RUN apt-get update &&  apt-get  -y install ssh vim curl git wget 
+RUN mkdir -p /root/.ssh_keys/
+RUN mkdir -p /root/.ssh/
+COPY id_dsa.pub /root/.ssh_keys/
+RUN chmod 0400 /root/.ssh_keys/*
+RUN cat /root/.ssh_keys/* >> /root/.ssh/authorized_keys
+RUN chmod 0400 /root/.ssh/*
+CMD /etc/init.d/ssh start && bash -l
+ENTRYPOINT /etc/init.d/ssh start && bash -l
