@@ -15,7 +15,6 @@ RUN chmod 0400 /root/.ssh_keys/*
 RUN cat /root/.ssh_keys/* >> /root/.ssh/authorized_keys
 RUN chmod 0400 /root/.ssh/*
 RUN mkdir /var/run/sshd
-#RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 
 EXPOSE 22 8080
 

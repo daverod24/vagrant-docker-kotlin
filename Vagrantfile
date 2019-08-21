@@ -9,7 +9,7 @@ Vagrant.configure(2) do |config|
     config.hostmanager.enabled           = true
     config.hostmanager.manage_guest      = true
 
-    config.ssh.private_key_path = "id_rsa"
+    config.ssh.private_key_path = "vagrant_docker/id_rsa"
 
     config.vm.define "srv" do |v|
       v.vm.provider "docker" do |d|
