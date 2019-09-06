@@ -5,6 +5,14 @@ ENV['VAGRANT_DEFAULT_PROVIDER'] = 'docker'
 
 Vagrant.configure(2) do |config|
 
+  # if Vagrant.has_plugin?("vagrant-proxyconf")
+  #   config.proxy.http     = "http://10.222.8.100:8080/"
+  #   config.proxy.https    = "http://10.222.8.100:8080/"
+  #   config.proxy.no_proxy = "localhost,127.0.0.1,.example.com"
+  #   config.apt_proxy.http = "http://10.222.8.100:8080/"
+  #   config.apt_proxy.https = "DIRECT"
+  #   config.docker_proxy.http = "http://10.222.8.100:8080/"
+  # end
     # config.ssh.username = "root"
     # config.hostmanager.enabled           = true
     # config.hostmanager.manage_guest      = true
@@ -15,10 +23,10 @@ Vagrant.configure(2) do |config|
 
     config.vm.define "ubuntu-vagrant-testing" do |v|
       v.vm.provider "docker" do |d|
-        # d.build_dir = "vagrant_docker"
-        # d.build_args = ["-t", "daverod24/ubuntu-vagrant-testing"]
-        # d.dockerfile = "Dockerfile-ubuntu.dockerfile"
-        d.image = "tknerr/baseimage-ubuntu:18.04"
+        d.build_dir = "vagrant_docker"
+        d.build_args = ["-t", "daverod24/ubuntu-vagrant-testing"]
+        d.dockerfile = "Dockerfile-ubuntu.dockerfile"
+        # d.image = "tknerr/baseimage-ubuntu:18.04"
         d.has_ssh    = true
         d.name = "ubuntu-vagrant-testing"
         d.remains_running = true
@@ -33,7 +41,7 @@ Vagrant.configure(2) do |config|
     config.vm.provision :ansible do |ansible|
       ansible.playbook      = "vagrant_docker/playbook.yml"
       ansible.become          = true
-      ansible.verbose          = "-vv"
+      ansible.verbose          = "-vvv"
       ansible.galaxy_role_file = "vagrant_docker/requirements.yml"
       ansible.galaxy_command = "ansible-galaxy install -r vagrant_docker/requirements.yml -p ./vagrant_docker/roles"
       ansible.raw_ssh_args = ['-o UserKnownHostsFile=/dev/null']
