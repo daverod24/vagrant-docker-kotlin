@@ -13,9 +13,7 @@ Vagrant.configure(2) do |config|
   #   config.apt_proxy.https = "DIRECT"
   #   config.docker_proxy.http = "http://10.222.8.100:8080/"
   # end
-    # config.ssh.username = "root"
-    # config.hostmanager.enabled           = true
-    # config.hostmanager.manage_guest      = true
+
 
     # config.ssh.private_key_path = "vagrant_docker/id_rsa"
     config.ssh.insert_key = false
@@ -53,5 +51,5 @@ Vagrant.configure(2) do |config|
     }
 
     end
-    config.vm.provision "shell", inline: "echo 'hello docker!'"
+    config.vm.provision "shell", inline: "echo 'hello ansible, vagrant docker!'"
 end
